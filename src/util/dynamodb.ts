@@ -28,6 +28,8 @@ const ddbDocClient = DynamoDBDocumentClient.from(client);
 export async function getOrCreateShortUrl(
   originalUrl: string
 ): Promise<string | undefined> {
+  console.log("getOrCreateShortUrl()");
+
   const params = {
     TableName: "ushr",
     IndexName: "originalUrl-index",
@@ -52,10 +54,13 @@ export async function getOrCreateShortUrl(
     }
   } catch (err) {
     console.log("Error: ", err);
+    throw err;
   }
 }
 
 export async function getOriginalUrl(id: string): Promise<string | undefined> {
+  console.log("getOriginalUrl()");
+
   const params = {
     TableName: "ushr",
     Key: { id },
@@ -72,6 +77,7 @@ export async function getOriginalUrl(id: string): Promise<string | undefined> {
     }
   } catch (err) {
     console.log("Error: ", err);
+    throw err;
   }
 }
 
