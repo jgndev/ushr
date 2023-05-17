@@ -24,7 +24,7 @@ const Interface = () => {
     setIsFetching(true);
 
     try {
-      const response = await fetch("https://ushr.dev/api/shorten", {
+      const response = await fetch("/api/shorten", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
