@@ -1,0 +1,75 @@
+{
+  "hosting": {
+    "amplifyhosting": {
+      "lastPushTimeStamp": "2023-05-17T14:39:31.813Z",
+      "service": "amplifyhosting",
+      "type": "cicd"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_hosting_amplifyhosting_appId": {
+      "usedBy": [
+        {
+          "category": "hosting",
+          "resourceName": "amplifyhosting"
+        }
+      ]
+    },
+    "AMPLIFY_hosting_amplifyhosting_type": {
+      "usedBy": [
+        {
+          "category": "hosting",
+          "resourceName": "amplifyhosting"
+        }
+      ]
+    },
+    "AMPLIFY_storage_ushr_arn": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "ushr"
+        }
+      ]
+    },
+    "AMPLIFY_storage_ushr_partitionKeyName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "ushr"
+        }
+      ]
+    },
+    "AMPLIFY_storage_ushr_partitionKeyType": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "ushr"
+        }
+      ]
+    },
+    "AMPLIFY_storage_ushr_region": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "ushr"
+        }
+      ]
+    },
+    "AMPLIFY_storage_ushr_tableName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "ushr"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "ushr": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB",
+      "serviceType": "imported"
+    }
+  }
+}
