@@ -1,9 +1,8 @@
-import { getOriginalUrl } from "@/util/dynamodb";
+import { getOriginalUrl } from "@/util/dbhandler";
 
 export default async function handler(req: any, res: any) {
   if (req.method === "GET") {
     const { id } = req.query;
-    console.log(id);
 
     try {
       const originalUrl = await getOriginalUrl(id as string);
@@ -13,7 +12,7 @@ export default async function handler(req: any, res: any) {
         res.redirect(302, originalUrl);
       }
     } catch (error) {
-      console.error(error);
+      console.error(`Error: ${error}`);
       res.status(500).json({ message: "Internal Server Error" });
     }
   } else {

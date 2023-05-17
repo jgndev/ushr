@@ -32,14 +32,12 @@ const Interface = () => {
         body: JSON.stringify({ url: url }),
       });
 
-      console.log(response);
-
       if (response.ok) {
         const data = await response.json();
         setShortenedUrl(data.shortUrl);
       }
     } catch (error) {
-      console.log(error);
+      console.log(`Error: ${error}`);
     } finally {
       setIsFetching(false);
     }

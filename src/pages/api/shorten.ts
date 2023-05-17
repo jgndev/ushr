@@ -1,5 +1,5 @@
 import { ShortUrlRequest, ShortUrlResponse } from "@/interfaces/shortUrl";
-import { getOrCreateShortUrl } from "@/util/dynamodb";
+import { getOrCreateShortUrl } from "@/util/dbhandler";
 
 export default async function handler(req: any, res: any) {
   if (req.method === "POST") {
@@ -17,14 +17,13 @@ export default async function handler(req: any, res: any) {
           const response: ShortUrlResponse = {
             shortUrl: shortUrl,
           };
-          console.log(`sending back shortUrl: ${response.shortUrl}`);
           return res.status(200).json(response);
         }
       } catch (error) {
-        console.log(error);
+        console.log(`Error: ${error}`);
       }
     } catch (error) {
-      console.log(error);
+      console.log(`Error: ${error}`);
       return res.status(500).json("Internal Server error");
     }
   } else {
