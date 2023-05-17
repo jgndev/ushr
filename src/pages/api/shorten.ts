@@ -17,7 +17,6 @@ export default async function handler(req: any, res: any) {
           const response: ShortUrlResponse = {
             shortUrl: shortUrl,
           };
-          // return res.status(200).json({ shortUrl: shortUrl });
           return res.status(200).json(response);
         }
       } catch (error) {
