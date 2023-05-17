@@ -18,7 +18,7 @@ const credentials = new AWS.Credentials(
 );
 
 AWS.config.update({
-  region: process.env.AWS_REGION,
+  region: process.env.REGION,
   credentials,
 });
 
