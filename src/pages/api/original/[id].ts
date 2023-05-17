@@ -3,6 +3,7 @@ import { getOriginalUrl } from "@/util/dynamodb";
 export default async function handler(req: any, res: any) {
   if (req.method === "GET") {
     const { id } = req.query;
+    console.log(id);
 
     try {
       const originalUrl = await getOriginalUrl(id as string);

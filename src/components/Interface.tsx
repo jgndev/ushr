@@ -32,9 +32,11 @@ const Interface = () => {
         body: JSON.stringify({ url: url }),
       });
 
+      console.log(response);
+
       if (response.ok) {
         const data = await response.json();
-        setShortenedUrl(data.shortenedUrl);
+        setShortenedUrl(data.shortUrl);
       }
     } catch (error) {
       console.log(error);

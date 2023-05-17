@@ -5,13 +5,9 @@ import {
   PutCommand,
   GetCommand,
 } from "@aws-sdk/lib-dynamodb";
-import shortid from "shortid";
+import shortid, { generate } from "shortid";
 import AWS from "aws-sdk";
 
-// const credentials = new AWS.Credentials(
-//   process.env.AWS_ACCESS_KEY_ID || "",
-//   process.env.AWS_SECRET_ACCESS_KEY || ""
-// );
 const credentials = new AWS.Credentials(
   process.env.ACCESS_KEY_ID || "",
   process.env.SECRET_ACCESS_KEY || ""
@@ -29,6 +25,7 @@ export async function getOrCreateShortUrl(
   originalUrl: string
 ): Promise<string | undefined> {
   console.log("getOrCreateShortUrl()");
+  console.log(originalUrl);
 
   const params = {
     TableName: "ushr",
@@ -39,17 +36,26 @@ export async function getOrCreateShortUrl(
 
   try {
     const data = await ddbDocClient.send(new QueryCommand(params));
+    console.log(data);
+    if (data === undefined || data === null) {
+      console.log("QueryCommand didn't work");
+    }
     if (data.Items && data.Items.length > 0) {
       // URL already exists, return the existing shortUrl
+      console.log("URL already exists");
       return data.Items[0].shortUrl as string;
     } else {
       // URL does not exist, create a new shortUrl
-      const shortUrl = generateShortUrl(); // your short URL generation function
+      // const shortUrl = generateShortUrl(); // your short URL generation function
+      const id = shortid.generate();
+      const shortUrl = `https://ushr.dev/${id}`;
       const putParams = {
         TableName: "ushr",
-        Item: { id: shortUrl, originalUrl, shortUrl },
+        Item: { id: id, originalUrl, shortUrl },
       };
-      await ddbDocClient.send(new PutCommand(putParams));
+      const result = await ddbDocClient.send(new PutCommand(putParams));
+      console.log(result);
+      console.log("PutCommand didn't work");
       return shortUrl;
     }
   } catch (err) {
@@ -60,6 +66,7 @@ export async function getOrCreateShortUrl(
 
 export async function getOriginalUrl(id: string): Promise<string | undefined> {
   console.log("getOriginalUrl()");
+  console.log(`received id: ${id}`);
 
   const params = {
     TableName: "ushr",
@@ -67,20 +74,19 @@ export async function getOriginalUrl(id: string): Promise<string | undefined> {
   };
 
   try {
+    console.log("trying to get the URL");
     const data = await ddbDocClient.send(new GetCommand(params));
+    console.log(`data: ${JSON.stringify(data)}`);
     if (data.Item) {
-      // The item was found, return the originalUrl
+      console.log(data.Item);
       return data.Item.originalUrl as string;
     } else {
       // The item was not found
+      console.log("Nothing found");
       return undefined;
     }
   } catch (err) {
     console.log("Error: ", err);
     throw err;
   }
-}
-
-function generateShortUrl(): string {
-  return `https://ushr.dev/${shortid.generate()}`;
 }
