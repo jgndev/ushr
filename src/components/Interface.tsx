@@ -1,4 +1,3 @@
-// import '../css/style.css';
 import { useRef, useState } from "react";
 import FetchingModal from "./FetchingModal";
 

@@ -1,15 +1,21 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import * as dotenv from 'dotenv';
+import { getOriginalUrl } from "@/util/dynamodb";
 
-export default function handler(req:any, res:any) {
-    dotenv.config()
+export default async function handler(req: any, res: any) {
+  if (req.method === "GET") {
+    const { id } = req.query;
 
-    if (req.method === 'POST') {
-        // Your logic to shorten the URL goes here
-        res.status(200).json({ shortUrl: 'Shortened URL' });
-
-
-    } else {
-        res.status(405).json({ message: 'Method not allowed' });
+    try {
+      const originalUrl = await getOriginalUrl(id as string);
+      if (originalUrl === undefined) {
+        res.status(404).json({ message: "Not Found" });
+      } else {
+        res.redirect(302, originalUrl);
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal Server Error" });
     }
+  } else {
+    res.status(405).json({ message: "Method not allowed" });
+  }
 }

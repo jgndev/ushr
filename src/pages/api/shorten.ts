@@ -1,29 +1,33 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import shortid from 'shortid';
+import { ShortUrlRequest, ShortUrlResponse } from "@/interfaces/shortUrl";
+import { getOrCreateShortUrl } from "@/util/dynamodb";
 
-export default function handler(req:any, res:any) {
-    if (req.method === 'POST') {
-        // Your logic to shorten the URL goes here
-        // res.status(200).json({ shortUrl: 'Shortened URL' });
-
+export default async function handler(req: any, res: any) {
+  if (req.method === "POST") {
     try {
-        const body = req.body;
+      const body = req.body as ShortUrlRequest;
+      const { url } = body;
 
-        const id = generateId();
-        const shortenedUrl = `https://ushr.dev/${id}`
-
-        // Write the entry to the DynamoDB table
-
-        // Reply to the client with the new URL
-    } catch (error) {
+      try {
+        const shortUrl = await getOrCreateShortUrl(url);
+        if (shortUrl === undefined) {
+          return res
+            .status(500)
+            .json("Internal Server Error, failed to read or write the URL.");
+        } else {
+          const response: ShortUrlResponse = {
+            shortUrl: shortUrl,
+          };
+          // return res.status(200).json({ shortUrl: shortUrl });
+          return res.status(200).json(response);
+        }
+      } catch (error) {
         console.log(error);
+      }
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json("Internal Server error");
     }
-
-    } else {
-        res.status(405).json({ message: 'Method not allowed' });
-    }
-}
-
-function generateId(): string {
-    return shortid.generate();
+  } else {
+    res.status(405).json({ message: "Method not allowed" });
+  }
 }
