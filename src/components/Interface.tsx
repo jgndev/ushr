@@ -24,16 +24,13 @@ const Interface = () => {
     setIsFetching(true);
 
     try {
-      const response = await fetch(
-        "https://jgn-ushr-api.azurewebsites.net/api/shorten",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ url: url }),
-        }
-      );
+      const response = await fetch("/api/shorten", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url: url }),
+      });
 
       if (response.ok) {
         const data = await response.json();
