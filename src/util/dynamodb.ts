@@ -8,9 +8,13 @@ import {
 import shortid from "shortid";
 import AWS from "aws-sdk";
 
+// const credentials = new AWS.Credentials(
+//   process.env.AWS_ACCESS_KEY_ID || "",
+//   process.env.AWS_SECRET_ACCESS_KEY || ""
+// );
 const credentials = new AWS.Credentials(
-  process.env.AWS_ACCESS_KEY_ID || "",
-  process.env.AWS_SECRET_ACCESS_KEY || ""
+  process.env.ACCESS_KEY_ID || "",
+  process.env.SECRET_ACCESS_KEY || ""
 );
 
 AWS.config.update({
